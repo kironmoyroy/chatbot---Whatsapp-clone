@@ -163,7 +163,7 @@ nav .nav_account_div {
 .chat-section .user_chat .chat .chat-box {
   width: 42%;
   margin: 0.8rem;
-  padding: 0.6rem;
+  padding: 0 0.6rem;
   box-shadow: 0px 0px 12px 0px gray;
   border-radius: 12px;
 }
@@ -173,6 +173,16 @@ nav .nav_account_div {
 .chat-section .user_chat .chat .outgoing {
   margin-left: auto;
   background-color: #6dff6d;
+}
+.chat-section .user_chat .chat .outgotime {
+  text-align: right;
+}
+.chat-section .user_chat .chat .outgoingerr {
+  margin-left: auto;
+  background-color: #f04747;
+}
+.chat-section .user_chat .chat .outgoingerrtime {
+  text-align: right;
 }
 .chat-section .user_chat .typing {
   color: green;
@@ -202,4 +212,17 @@ nav .nav_account_div {
   background-color: #fff88f;
   box-shadow: 1px 1px 10px gray;
   border: none;
+}
+
+.showUserList .receiveder {
+  cursor: pointer;
+}
+.showUserList #receive_id {
+  display: none;
+}
+.showUserList .Online {
+  color: green;
+}
+.showUserList .Offline {
+  color: red;
 }

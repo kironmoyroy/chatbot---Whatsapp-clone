@@ -1,31 +1,107 @@
 <nav>
-    <div class="nav-wrapper container">
-      <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-      <div class="nav_account_div">
-        <div>
-          <a href="/" class="brand-logo" style="top: 0  !important;">ChatBot</a>
-        </div>
-    
-        <div>
-          <a class='dropdown-trigger' href='#' data-target='nav_account_link'><i class="material-icons">account_circle</i></a>
-        </div>
+  <div class="nav-wrapper container">
+    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    <div class="nav_account_div">
+      <div>
+        <a href="/" class="brand-logo" style="top: 0  !important;">ChatBot</a>
+      </div>
+
+      <div>
+        <a class='dropdown-trigger' href='#' data-target='nav_account_link'><i
+            class="material-icons">account_circle</i></a>
       </div>
     </div>
-  </nav>
+  </div>
+</nav>
 
-  <ul class="sidenav" id="mobile-demo">
-    <%- include("../auth/userdata") %>
+<ul class="sidenav" id="mobile-demo">
+  <ul class="collection showUserList" id="sideShowUserList">
   </ul>
+</ul>
 
-   <!-- Dropdown Structure -->
-   <ul id='nav_account_link' class='dropdown-content'>
-    <% if(user){ %>
-      <li><a href="/logout">Logout</a></li>
+<!-- Dropdown Structure -->
+<ul id='nav_account_link' class='dropdown-content'>
+  <% if(user){ %>
+    <li><a href="/logout">Logout</a></li>
     <% }else{ %>
-    <li><a href="/login">Login</a></li>
-    <li><a href="/register">Register</a></li>
-    <% } %>
-  </ul>
+      <li><a href="/login">Login</a></li>
+      <li><a href="/register">Register</a></li>
+      <% } %>
+</ul>
+
+
+
+<% if(user){ %>
+
+
+  <script>
+    const getReceivederId = (e) => {
+      const receiveder_msg_id = document.querySelector("#receiveder_msg_id")
+      receiveder_msg_id.innerText = e.id;
+
+      const receiveder_msg_name = document.querySelector("#receiveder_msg_name")
+      receiveder_msg_name.innerText = e.name;
+      testarea0 = document.querySelector(".chat").innerHTML = ""
+
+      let data = {
+        sender_id: '<%= user._id %>', receiveder_id: e.id
+      }
+
+      
+      axios.post('/chat/load', data)
+        .then(function (response) {
+          const chat = document.querySelector(".chat")
+          let markup = [];
+          let newDev = document.createElement('div')
+          const chatdata = response.data
+          chatdata.forEach(c => {
+
+            let addClass;
+
+            if (c.sender_id === '<%= user._id %>') {
+              addClass = 'outgoing'
+            } else {
+              addClass = "incoming"
+            }
+
+            markup.push(`
+            <div class='chat-box ${addClass}'>
+              <p>${c.massage}</p>
+            <p class="${addClass} === 'outgoing' ? 'outgotime' : ${addClass} === 'incoming' ? 'incoming' : "outgoingerrtime"}"><span>${moment(c.time).format('LT')}</span></p> 
+          </div>  
+            `)
+          });
+          if(markup != undefined){
+            chat.innerHTML=markup.reverse()
+          }
+        
+          // console.log(incominMsg);
+          // appundMassage(msg, "incoming")
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+    }
+
+
+
+    // const appundMassage = (msg, type) => {
+    //   let newDev = document.createElement('div')
+    //   newDev.classList.add(type, "chat-box")
+
+    //   let markup = `
+    //     <p>${msg.massage}</p>
+    //     <p class="${type === 'outgoing' ? 'outgotime' : type === 'incoming' ? 'incoming' : "outgoingerrtime"}"><span>${moment(msg.time).format('LT')}</span></p>
+    // `
+    //   newDev.innerHTML = markup;
+    //   chat.prepend(newDev)
+    // }
+
+  </script>
+
+
+  <% } %>
 
 
 
@@ -34,46 +110,45 @@
 
 
 
-
-
-
-
-  <div class="notifai" id="notifai">
-    <!-- <div class="alert alert-danger notifai_body" role="alert">
+    <div class="notifai" id="notifai">
+      <!-- <div class="alert alert-danger notifai_body" role="alert">
       <h6>Success</h6>
       <a id="notifai_close"> <i class="material-icons prefix">close</i></a>
     </div> -->
-  
-    <% if(msg){ %>
-      <% if(msg.type==="error" ){ %>
-        <div class="alert alert-danger notifai_body" role="alert" >
-          <h6><%= msg.message %></h6>
-          <a id="notifai_close"> <i class="material-icons prefix">close</i></a>
-        </div>
-        <% }else if(msg.type==="done" ){ %>
-          <div class="alert alert-success notifai_body" role="alert" >
-            <h6><%= msg.message %></h6>
-            <a id="notifai_close"> <i class="material-icons prefix">close</i></a>        
-          </div>
-          <% }else if(msg.type==="info" ){ %>
-            <h6><%= msg.message %></h6>
-            <a id="notifai_close"> <i class="material-icons prefix">close</i></a>
-            <div class="alert alert-primary notifai_body" role="alert" >
-            </div>
-            <% }} %>
-  
-  </div>
-  
-  <script>
-    // Notifaction 
-    const notifaiTimeout = document.getElementById("notifai")
-    setTimeout(() => {
-      notifaiTimeout.style.display = "none"
-    }, 4000);
-    document.getElementById("notifai_close").addEventListener("click", () => {
-      notifaiTimeout.style.display = "none"
-    })
-  </script>
 
-  
-  
+      <% if(msg){ %>
+        <% if(msg.type==="error" ){ %>
+          <div class="alert alert-danger notifai_body" role="alert">
+            <h6>
+              <%= msg.message %>
+            </h6>
+            <a id="notifai_close"> <i class="material-icons prefix">close</i></a>
+          </div>
+          <% }else if(msg.type==="done" ){ %>
+            <div class="alert alert-success notifai_body" role="alert">
+              <h6>
+                <%= msg.message %>
+              </h6>
+              <a id="notifai_close"> <i class="material-icons prefix">close</i></a>
+            </div>
+            <% }else if(msg.type==="info" ){ %>
+              <h6>
+                <%= msg.message %>
+              </h6>
+              <a id="notifai_close"> <i class="material-icons prefix">close</i></a>
+              <div class="alert alert-primary notifai_body" role="alert">
+              </div>
+              <% }} %>
+
+    </div>
+
+    <script>
+      // Notifaction 
+      const notifaiTimeout = document.getElementById("notifai")
+      setTimeout(() => {
+        notifaiTimeout.style.display = "none"
+      }, 4000);
+      document.getElementById("notifai_close").addEventListener("click", () => {
+        notifaiTimeout.style.display = "none"
+      })
+    </script>

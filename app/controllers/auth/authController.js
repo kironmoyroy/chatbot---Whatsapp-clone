@@ -72,6 +72,11 @@ const authController = () => {
                     req.session.msg = { type: "error", message: "User not found" }
                     return res.redirect("/login")
                 }
+                console.log(user.isOnline);
+                if(user.isOnline === "1"){
+                    req.session.msg = { type: "error", message: "User already logged in" }
+                    return res.redirect("/login")
+                }
                 const verifiedUser = await bcrypt.compare(password,user.password)
                 if(verifiedUser === false){
                     req.session.msg = { type: "error", message: "Wrong email or password" }

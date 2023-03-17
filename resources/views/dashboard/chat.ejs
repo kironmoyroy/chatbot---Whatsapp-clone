@@ -2,24 +2,28 @@
 
     <div class="user_chat">
         <div class="user">
-         <%- include("../auth/userdata", {data}) %>
+            <ul class="collection showUserList" id="chatShowUserList">
+            </ul>
         </div>
         <div class="chat-area">
             <div class="chat-head">
-                <span><b>Welcome to <i><%= user.name %></i></b></span>
+                <p hidden id="receiveder_msg_id"></p>
+                <span><b id="receiveder_msg_name">Select User</b></span>
             </div>
             <div class="chat">
     
                 <!-- <div class="chat-box incoming">
-                    <h4>Kironmoy Roy</h4>
+                    <h5><b>Kironmoy Roy</b></h5>
                     <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Delectus, beatae.</p>
+                    <p class="incometime"><span>10:30 PM</span></p>
                 </div>
     
                 <div class="chat-box outgoing">
-                    <h4> Kironmoy Roy</h4>
+                    <h5> <b>Kironmoy Roy</b></h5>
                     <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Delectus, beatae.</p>
-                </div> -->
-    
+                    <p class="outgotime"><span>10:30 PM</span></p>
+                </div>
+     -->
     
             </div>
             <div class="typing">
@@ -34,3 +38,5 @@
 
 
 </section>
+
+

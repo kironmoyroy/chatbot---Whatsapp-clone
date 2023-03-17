@@ -5,53 +5,137 @@
 
 <script>
   const userid = document.querySelector("#userID")
-  const textarea = document.querySelector("#textarea")
-  const submitBtn = document.querySelector(".send")
   if (userid) {
-    let socket = io()
-    let id = userid.innerText;
-    // plain object
-    io({auth: {token: id }});
+    // io();
 
+    let sender_id = userid.innerText;
+    let socket = io({ auth: { token: sender_id } })
+    // Socket Err
     socket.on("connect_error", (err) => {
-        console.log(err);
+      console.log(err);
     });
+    // Show User List
+    const sideShowUserList = document.querySelector("#sideShowUserList")
+    const chatShowUserList = document.querySelector("#chatShowUserList")
+    socket.emit("user", sender_id)
+    socket.on("user", (data) => {
+      data.forEach(u => {
+        const markup = `
+        <li class="collection-item avatar receiveder" onclick="getReceivederId({id:'${u._id}',name:'${u.name}'})">
+          <span id="receive_id" >${u._id}</span>
+        <img src="/img/profile.webp" class="material-icons circle"></img>
+          <span class="title">${u.name}</span>
+          <p id="status-${u._id}" class="${u.isOnline === "1" ? 'Online' : 'Offline'}">${u.isOnline === "1" ? 'Online' : 'Offline'} </p>
+          <p >Thuis is massage  </p>
+          <p class="secondary-content"><i class="material-icons" style="color:red">toll</i></p>
+        </li>  
+        `
+        sideShowUserList.innerHTML += markup
+        chatShowUserList.innerHTML += markup
+      });
+    })
 
-    // client-side
-    socket.on("connect", () => {
-      console.log(socket.id); 
-    });
+    // User Onlie Offline Status 
+    socket.on("onlineStatus", status => {
+      onlineOflineStatusUpdate(status)
+    })
+    socket.on("OfflineStatus", status => {
+      onlineOflineStatusUpdate(status)
+    })
 
-    socket.emit("data","asddf")
+    const onlineOflineStatusUpdate = (status) => {
+      const userStatus = document.querySelector(`#status-${status}`)
+      let addClassname;
+      if (userStatus.classList.value === 'Online') {
+        addClassname = 'Offline'
+      } else {
+        addClassname = 'Online'
+      }
+      userStatus.classList.remove(userStatus.classList.value)
+      userStatus.classList.add(addClassname)
+      userStatus.innerText = addClassname
+    }
 
-
-
-
-
-
-
-
-
+    // Chat user for chat
+    const chat = document.querySelector(".chat")
+    const textarea = document.querySelector("#textarea")
+    const submitBtn = document.querySelector(".send")
 
     submitBtn.addEventListener("click", () => {
-      const massage = textarea.value
-      sendMassage(massage)
-    })
-    const sendMassage = (data) => {
-      let msg = {
-        id, data, time: new Date()
+      const receiveder_id = document.querySelector("#receiveder_msg_id").innerText;
+      if (receiveder_id) {
+        const massage = textarea.value
+        sendMassage(massage, receiveder_id)
+      } else {
+        let msg = {
+          sender_id: null, receiveder_id: null, massage: "Palace Select a User", time: new Date()
+        }
+        appundMassage(msg, "outgoingerr")
       }
-      // Appent the DOM
+      textarea.value = ""
+    })
 
-      // Send Server
+
+    const sendMassage = (data, receiveder_id) => {
+      let msg = {
+        sender_id, receiveder_id, massage: data, time: new Date()
+      }
+      // save to database
+      fetch("/chat/save",
+        {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: "POST",
+          body: JSON.stringify(msg)
+        })
+        .then(async (res) => {
+          if (res.status === 200) {
+            // Appent the DOM
+            appundMassage(msg, "outgoing")
+            // Send Server
+            socket.emit("massage", msg)
+          } else {
+            let msg = {
+              sender_id: null, receiveder_id: null, massage: "Somethik want wrong", time: new Date()
+            }
+            appundMassage(msg, "outgoingerr")
+            setTimeout(() => {
+              location.reload("/chat");
+            }, 1000);
+          }
+        })
+        .catch(function (res) { })
     }
 
 
+    // Receved mag
+
+    socket.on("massage", (data) => {
+      const receiveder_id = document.querySelector("#receiveder_msg_id").innerText;
+      if (data.receiveder_id === sender_id) {
+        if(data.sender_id === receiveder_id){
+          const msg = {
+          sender_id: data.sender_id, receiveder_id: data.receiveder_id, massage: data.massage, time: data.time
+        }
+        appundMassage(msg, "incoming")
+        }
+      }
+    })
 
 
+    const appundMassage = (msg, type) => {
+      let newDev = document.createElement('div')
+      newDev.classList.add(type, "chat-box")
 
-
-
+      let markup = `
+        <p>${msg.massage}</p>
+        <p class="${type === 'outgoing' ? 'outgotime' : type === 'incoming' ? 'incoming' : "outgoingerrtime"}"><span>${moment(msg.time).format('LT')}</span></p>   
+    `
+      newDev.innerHTML = markup;
+      chat.prepend(newDev)
+    }
 
   }
 

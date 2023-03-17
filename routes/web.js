@@ -17,6 +17,8 @@ const initRoute = (app)=>{
 
 
     app.get("/chat",isverified,chatController().chat)
+    app.post("/chat/save",isverified,chatController().saveChat)
+    app.post("/chat/load",isverified,chatController().loadChat)
 
 
 }

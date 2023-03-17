@@ -17,7 +17,7 @@ const isverified = async (req, res, next) => {
             return res.redirect("/login")
         }
 
-        const user = await User.findOne({"_id":id},{name:-1,email:-1});
+        const user = await User.findOne({"_id":id},{name:-1,email:-1,isOnline:-1});
 
         next()
 
@@ -38,7 +38,7 @@ const islogin =async (req,res,next)=>{
             next()
         }else{
             const {id} = jwt.verify(token,process.env.JWT_TOKEN)
-            const user = await User.findOne({_id:id},{name:-1,email:-1})
+            const user = await User.findOne({_id:id},{name:-1,email:-1,isOnline:-1})
             if(!user){
                 res.clearCookie("auth_token")
                 req.session.msg = { type: "error", message: "unauthorized access" }
@@ -65,7 +65,7 @@ const checkStatus =async (req,res,next)=>{
             next() 
         }else{
             const {id} = jwt.verify(token,process.env.JWT_TOKEN)
-            const user = await User.findOne({_id:id},{name:-1,email:-1})
+            const user = await User.findOne({_id:id},{name:-1,email:-1,isOnline:-1})
             if(!user){
                 res.clearCookie("auth_token")
                 res.locals.user = null
