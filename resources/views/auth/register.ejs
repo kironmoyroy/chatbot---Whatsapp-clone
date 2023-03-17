@@ -1,0 +1,50 @@
+<section class="auth_section register">
+    <div class="auth_container">
+        <div class="cart">
+            <div class="row">
+                <form class="col s12" method="POST" action="/register">
+                    <div class="row ">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_circle</i>
+                            <input name="name" value="<%= messages.name %>" id="icon_prefix" type="text" class="validate">
+                            <label for="icon_prefix">First Name</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">email</i>
+                            <input name="email" value="<%= messages.email %>" id="icon_email" type="email" class="validate">
+                            <label for="icon_email">Email Address</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">phone</i>
+                            <input name="phone" value="<%= messages.phone %>" id="icon_telephone" type="tel" class="validate">
+                            <label for="icon_telephone">Telephone</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">password</i>
+                            <input name="password" id="icon_password" type="password" class="validate">
+                            <label for="icon_password">Password</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">password</i>
+                            <input name="cpassword" id="icon_cPassword" type="password" class="validate">
+                            <label for="icon_cPassword">Conform password</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <p>
+                                <label>
+                                  <input type="checkbox" required />
+                                  <span>Terms & Conditions</span>
+                                </label>
+                              </p>
+                              <div class="auth_bun">
+                                  <button type="submit" class="waves-effect waves-light btn"><i class="material-icons left">how_to_reg</i>Register</button>
+                              </div>
+                              <p>Already have an account? <a href="/login">Login</a></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>

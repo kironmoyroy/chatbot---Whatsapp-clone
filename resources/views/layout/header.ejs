@@ -1,0 +1,79 @@
+<nav>
+    <div class="nav-wrapper container">
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <div class="nav_account_div">
+        <div>
+          <a href="/" class="brand-logo" style="top: 0  !important;">ChatBot</a>
+        </div>
+    
+        <div>
+          <a class='dropdown-trigger' href='#' data-target='nav_account_link'><i class="material-icons">account_circle</i></a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <ul class="sidenav" id="mobile-demo">
+    <%- include("../auth/userdata") %>
+  </ul>
+
+   <!-- Dropdown Structure -->
+   <ul id='nav_account_link' class='dropdown-content'>
+    <% if(user){ %>
+      <li><a href="/logout">Logout</a></li>
+    <% }else{ %>
+    <li><a href="/login">Login</a></li>
+    <li><a href="/register">Register</a></li>
+    <% } %>
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="notifai" id="notifai">
+    <!-- <div class="alert alert-danger notifai_body" role="alert">
+      <h6>Success</h6>
+      <a id="notifai_close"> <i class="material-icons prefix">close</i></a>
+    </div> -->
+  
+    <% if(msg){ %>
+      <% if(msg.type==="error" ){ %>
+        <div class="alert alert-danger notifai_body" role="alert" >
+          <h6><%= msg.message %></h6>
+          <a id="notifai_close"> <i class="material-icons prefix">close</i></a>
+        </div>
+        <% }else if(msg.type==="done" ){ %>
+          <div class="alert alert-success notifai_body" role="alert" >
+            <h6><%= msg.message %></h6>
+            <a id="notifai_close"> <i class="material-icons prefix">close</i></a>        
+          </div>
+          <% }else if(msg.type==="info" ){ %>
+            <h6><%= msg.message %></h6>
+            <a id="notifai_close"> <i class="material-icons prefix">close</i></a>
+            <div class="alert alert-primary notifai_body" role="alert" >
+            </div>
+            <% }} %>
+  
+  </div>
+  
+  <script>
+    // Notifaction 
+    const notifaiTimeout = document.getElementById("notifai")
+    setTimeout(() => {
+      notifaiTimeout.style.display = "none"
+    }, 4000);
+    document.getElementById("notifai_close").addEventListener("click", () => {
+      notifaiTimeout.style.display = "none"
+    })
+  </script>
+
+  
+  

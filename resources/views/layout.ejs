@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/app.css">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="/plugin/materialize/css/materialize.min.css">
+    <!-- google icons  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.0-alpha.2/tailwind.min.css" integrity="sha512-NfPS/OTotUyEFCm5WZ13U5U6o9PNYOe2CghiZzs3yyniMckFS06Y9Cmn3texE1THZ1tzm2OYjUG0I7hdJfAwpA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+   
+    <title>Socket.io</title>
+</head>
+<body>
+    <%- include("layout/header") %>
+    <main >
+        <%- body %>
+    </main >
+    <%- include("layout/footer") %>
+   
+    <!-- Compiled and minified JavaScript -->
+  
+    <script src="/plugin/materialize/js/materialize.min.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="/js/app.js"></script>
+    <% if(user){ %>
+        <%- include("layout/socket") %>
+    <% } %>
+</body>
+</html>
+
+

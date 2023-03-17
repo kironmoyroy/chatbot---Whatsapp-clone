@@ -1,0 +1,36 @@
+<section class="chat-section">
+
+    <div class="user_chat">
+        <div class="user">
+         <%- include("../auth/userdata", {data}) %>
+        </div>
+        <div class="chat-area">
+            <div class="chat-head">
+                <span><b>Welcome to <i><%= user.name %></i></b></span>
+            </div>
+            <div class="chat">
+    
+                <!-- <div class="chat-box incoming">
+                    <h4>Kironmoy Roy</h4>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Delectus, beatae.</p>
+                </div>
+    
+                <div class="chat-box outgoing">
+                    <h4> Kironmoy Roy</h4>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Delectus, beatae.</p>
+                </div> -->
+    
+    
+            </div>
+            <div class="typing">
+          
+            </div>
+            <div class="massage">
+                <textarea id="textarea"></textarea>
+                <button class="send">Send</button>
+            </div>
+        </div>
+    </div>
+
+
+</section>
